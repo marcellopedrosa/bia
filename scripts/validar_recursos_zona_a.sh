@@ -12,9 +12,9 @@ else
   echo ">[ERRO] Tenho um problema ao retornar a subnet da zona a. Será se existe uma subnet na zona A?"
 fi
 
-security_group_id=$(aws ec2 describe-security-groups --group-names "bia-dev" --query "SecurityGroups[0].GroupId" --output text 2>/dev/null)
+security_group_id=$(aws ec2 describe-security-groups --group-names "security-group-qa-web" --query "SecurityGroups[0].GroupId" --output text 2>/dev/null)
 if [ $? -eq 0 ]; then
-  echo "[OK] Security Group bia-dev foi criado"
+  echo "[OK] Security Group security-group-qa-web foi criado"
   
   # Validar inbound rule para o security group 'bia-dev'
   inbound_rule=$(aws ec2 describe-security-groups --group-ids $security_group_id --filters "Name=ip-permission.from-port,Values=3001" --filters "Name=ip-permission.cidr,Values=0.0.0.0/0" --output text)
