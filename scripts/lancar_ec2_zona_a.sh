@@ -7,7 +7,7 @@ if [ -z "$security_group_id" ]; then
     exit 1
 fi
 
-aws ec2 run-instances --image-id ami-02f3f602d23f1659d --count 1 --instance-type t2.micro \
+aws ec2 run-instances --image-id ami-02f3f602d23f1659d --count 1 --instance-type t3.micro \
 --security-group-ids $security_group_id --subnet-id $subnet_id --associate-public-ip-address \
 --block-device-mappings '[{"DeviceName":"/dev/xvda","Ebs":{"VolumeSize":15,"VolumeType":"gp2"}}]' \
 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=csc-sgp-nginx-hml}]' \
