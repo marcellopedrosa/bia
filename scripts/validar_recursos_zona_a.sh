@@ -12,17 +12,17 @@ else
   echo ">[ERRO] Tenho um problema ao retornar a subnet da zona a. Será se existe uma subnet na zona A?"
 fi
 
-security_group_id=$(aws ec2 describe-security-groups --group-names "security-group-qa-web" --query "SecurityGroups[0].GroupId" --output text 2>/dev/null)
+security_group_id=$(aws ec2 describe-security-groups --group-names "csc-sgp-nginx-hml" --query "SecurityGroups[0].GroupId" --output text 2>/dev/null)
 if [ $? -eq 0 ]; then
-  echo "[OK] Security Group security-group-qa-web foi criado"
+  echo "[OK] Security Group csc-sgp-nginx-hml foi criado"
   
-  # Validar inbound rule para o security group 'bia-dev'
-  inbound_rule=$(aws ec2 describe-security-groups --group-ids $security_group_id --filters "Name=ip-permission.from-port,Values=3001" --filters "Name=ip-permission.cidr,Values=0.0.0.0/0" --output text)
+  # Validar inbound rule para o security group 'csc-sgp-nginx-hml'
+  inbound_rule=$(aws ec2 describe-security-groups --group-ids $security_group_id --filters "Name=ip-permission.from-port,Values=80" --filters "Name=ip-permission.cidr,Values=0.0.0.0/0" --output text)
 
   if [ -n "$inbound_rule" ]; then
     echo " [OK] Regra de entrada está ok"
   else
-    echo " >[ERRO] Regra de entrada para a porta 3001 não encontrada ou não está aberta para o mundo todo. Reveja a aula do Henrylle"
+    echo " >[ERRO] Regra de entrada para a porta 80 não encontrada ou não está aberta para o mundo todo."
   fi
 
   # Validar outbound rule para o security group 'bia-dev'
@@ -34,11 +34,11 @@ if [ $? -eq 0 ]; then
     echo " >[ERRO] Regra de saída para o mundo não encontrada. Reveja a aula do Henrylle"
   fi
 else
-  echo ">[ERRO] Não achei o security group bia-dev. Ele foi criado?"
+  echo ">[ERRO] Não achei o security group csc-sgp-nginx-hml. Ele foi criado?"
 fi
 
-if aws iam get-role --role-name role-acesso-ssm &>/dev/null; then
-    echo "[OK] Tudo certo com a role 'role-acesso-ssm'"
+if aws iam get-role --role-name role-ec2-ssm-access-hml &>/dev/null; then
+    echo "[OK] Tudo certo com a role 'role-ec2-ssm-access-hml'"
 else
-    echo ">[ERRO] A role 'role-acesso-ssm' não existe"
+    echo ">[ERRO] A role 'role-ec2-ssm-access-hml' não existe"
 fi
