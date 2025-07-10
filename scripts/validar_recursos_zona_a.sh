@@ -25,13 +25,13 @@ if [ $? -eq 0 ]; then
     echo " >[ERRO] Regra de entrada para a porta 80 não encontrada ou não está aberta para o mundo todo."
   fi
 
-  # Validar outbound rule para o security group 'bia-dev'
+  # Validar outbound rule para o security group 'csc-sgp-nginx-hml'
   outobund_rule=$(aws ec2 describe-security-groups --group-ids $security_group_id --query "SecurityGroups[0].IpPermissionsEgress[?IpProtocol=='-1' && IpRanges[0].CidrIp=='0.0.0.0/0']" --output text)
   
   if [ -n "$outobund_rule" ]; then
     echo " [OK] Regra de saída está correta"
   else
-    echo " >[ERRO] Regra de saída para o mundo não encontrada. Reveja a aula do Henrylle"
+    echo " >[ERRO] Regra de saída para o mundo não encontrada."
   fi
 else
   echo ">[ERRO] Não achei o security group csc-sgp-nginx-hml. Ele foi criado?"
